@@ -1,4 +1,4 @@
-/*
+/************************************************************************
 * The idea of the library is simple. I am  Saving a particular parameters
 * into multiple location of the eeprom. Suppose I want to store a variable
 * in eeprom. Everytime I want to store the variable, I change my location.
@@ -8,7 +8,16 @@
 *So for saving value in eeprom, we need two types of buffer 
 * 1. Parameter Buffer : This is the intended value we want to store in EEPROM
 * 2. Status Buffer: This buffer keeps track of my current location in buffer.
-*/
+**************************************************************************/
+
+
+/**************************************************************************
+                           Author Information
+***************************************************************************
+Author : Shuvangkar Shuvo
+email: sshuvo93[at]gmail.com
+Dhaka, Bangladesh
+**************************************************************************/
 
 
 #include "eep.h"
@@ -27,12 +36,15 @@
 
 EEProm::EEProm(int addrPtr, byte bufSz, byte paramSize)
 {
-  _initAddr = addrPtr;
-  _bufSz = bufSz;
-  _paramPacketSz = paramSize;
+  _initAddr = addrPtr; //First address of the buffer
+  _bufSz = bufSz;      //Total number of buffer 
+  _paramPacketSz = paramSize;// Total byte in a parameter packet
   //_clrStatusBuf();
 }
 
+/*************************************************************
+* When status buffer becomes full, this method clears the status buffer
+*************************************************************/
 void EEProm::_clrStatusBuf()
 {
   
@@ -43,6 +55,11 @@ void EEProm::_clrStatusBuf()
   //Extra protection is needed here. after setting zero read and check
   // whether all values are zero.
 }
+
+/************************************************************
+*This methods scan the status buffer and find out the current
+*location to write
+*************************************************************/
 byte EEProm::_getStatusPtr()
 {
   byte ptr;
@@ -51,10 +68,13 @@ byte EEProm::_getStatusPtr()
   {
     ptr = EEPROM.read( _initAddr + i);
     //debugEepln(i);
-  } while (++i && ptr && i <= _bufSz);
+  } while (++i && ptr && (i <= _bufSz));
   return i;
 }
 
+/************************************************************
+*user call this methods to save the parameter packet
+*************************************************************/
 void EEProm::savePacket(byte *dataBuf)
 {
   byte statusPtr = _getStatusPtr();
@@ -62,9 +82,13 @@ void EEProm::savePacket(byte *dataBuf)
   {
      debugEepln(F("<<<<<<<<<Buf Full>>>>>"));
     _clrStatusBuf();
+     //first value of status pointer is 1, zero indicates
+     // the location is not used yet
     statusPtr = 1;
   }
+
   byte index = statusPtr - 1;
+  //Status pointer address ends, param pointer address starts
   int paramInitAddr = _initAddr + _bufSz;
   int paramPtr = paramInitAddr + (index * _paramPacketSz);
   debugEep(F("Data Save Addr: ")); debugEepln(paramPtr);
@@ -76,6 +100,9 @@ void EEProm::savePacket(byte *dataBuf)
   EEPROM.write(_initAddr + index, statusPtr); // update status pointer
 }
 
+/************************************************************
+*user call this methods to read last saved value
+*************************************************************/
 void  EEProm::readPacket(byte *dataBuf)
 {
   byte statusPtr = _getStatusPtr();
@@ -91,6 +118,8 @@ void  EEProm::readPacket(byte *dataBuf)
   }
   //Serial.println();
 }
+
+
 void EEProm::printStatusBuf()
 {
   byte value;
