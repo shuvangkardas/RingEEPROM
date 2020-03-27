@@ -1,3 +1,16 @@
+/*
+* The idea of the library is simple. I am  Saving a particular parameters
+* into multiple location of the eeprom. Suppose I want to store a variable
+* in eeprom. Everytime I want to store the variable, I change my location.
+* Thus i am using 4 location for my varibale. By this I am getting, 4 times
+* endurance of eeprom for that variable. 
+
+*So for saving value in eeprom, we need two types of buffer 
+* 1. Parameter Buffer : This is the intended value we want to store in EEPROM
+* 2. Status Buffer: This buffer keeps track of my current location in buffer.
+*/
+
+
 #include "eep.h"
 #include <EEPROM.h>
 
