@@ -24,7 +24,7 @@ Dhaka, Bangladesh- March 2020
 #include <EEPROM.h>
 
 
-#define EEP_DEBUG
+//#define EEP_DEBUG
 #ifdef EEP_DEBUG
 #define debugEep(...) Serial.print(__VA_ARGS__)
 #define debugEepln(...) Serial.println(__VA_ARGS__)
