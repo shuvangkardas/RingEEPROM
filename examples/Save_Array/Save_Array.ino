@@ -1,5 +1,5 @@
 #include "RingEEPROM.h"
-#define FIRST_ADDR 10
+#define FIRST_ADDR 100
 #define BUFFER_SIZE 10
 #define PARAM_PACKET_SIZE 6
 
@@ -12,6 +12,7 @@ void setup()
 {
   Serial.begin(9600);
   Serial.println("Setup Done");
+  Serial.print(F("Buf Last Addr: "));Serial.println(myeepRom.getBufLastAddr());
 }
 
 void loop()

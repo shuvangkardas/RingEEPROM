@@ -16,7 +16,7 @@
 ***************************************************************************
 Author : Shuvangkar Shuvo
 email: sshuvo93[at]gmail.com
-Dhaka, Bangladesh
+Dhaka, Bangladesh- March 2020
 **************************************************************************/
 
 
@@ -119,6 +119,20 @@ void  RingEEPROM::readPacket(byte *dataBuf)
   //Serial.println();
 }
 
+/************************************************************
+*This function retunrs the last address of the complete buffers. 
+* So that use can know what is the end pointer for the eeprom object
+*************************************************************/
+uint16_t RingEEPROM::getBufLastAddr()
+{
+  uint16_t totalByte = _bufSz + (_bufSz*_paramPacketSz);
+  totalByte = _initAddr + totalByte;
+  return totalByte;
+}
+
+/************************************************************
+*Return the current address of EEPROM parameter
+*************************************************************/
 uint16_t  RingEEPROM::getParamPtr()
 {
 	return _paramPtr;
@@ -139,7 +153,7 @@ void RingEEPROM::printArray(byte *data, byte len)
 {
   for (byte i = 0; i < len; i++)
   {
-    debugEep(data[i]); debugEep("  ");
+    debugEep(*(data+i)); debugEep("  ");
   }
   debugEepln();
 }

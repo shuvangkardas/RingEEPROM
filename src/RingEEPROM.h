@@ -6,17 +6,16 @@ class RingEEPROM
 {
   public:
     RingEEPROM(int addrPtr, byte bufSz, byte paramSize);
-    void determineAddr();
     void savePacket(byte *dataBuf);
     void readPacket(byte *dataBuf);
     void printStatusBuf();
     void printArray(byte *data, byte len);
-    void populateStatus();
-    void _clrStatusBuf();
-
-    byte _getStatusPtr();
+    void populateStatus();  
     uint16_t getParamPtr();
+    uint16_t getBufLastAddr();
   private:
+    void _clrStatusBuf();
+    byte _getStatusPtr();
 
     int _initAddr;
     byte _bufSz;
