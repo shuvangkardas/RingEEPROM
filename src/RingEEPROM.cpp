@@ -20,11 +20,11 @@ Dhaka, Bangladesh
 **************************************************************************/
 
 
-#include "eep.h"
+#include "RingEEPROM.h"
 #include <EEPROM.h>
 
 
-//#define EEP_DEBUG
+#define EEP_DEBUG
 #ifdef EEP_DEBUG
 #define debugEep(...) Serial.print(__VA_ARGS__)
 #define debugEepln(...) Serial.println(__VA_ARGS__)
@@ -34,7 +34,7 @@ Dhaka, Bangladesh
 #endif
 
 
-EEProm::EEProm(int addrPtr, byte bufSz, byte paramSize)
+RingEEPROM::RingEEPROM(int addrPtr, byte bufSz, byte paramSize)
 {
   _initAddr = addrPtr; //First address of the buffer
   _bufSz = bufSz;      //Total number of buffer 
@@ -45,7 +45,7 @@ EEProm::EEProm(int addrPtr, byte bufSz, byte paramSize)
 /*************************************************************
 * When status buffer becomes full, this method clears the status buffer
 *************************************************************/
-void EEProm::_clrStatusBuf()
+void RingEEPROM::_clrStatusBuf()
 {
   
   for (byte i = 0; i < _bufSz; i++) {
@@ -60,7 +60,7 @@ void EEProm::_clrStatusBuf()
 *This methods scan the status buffer and find out the current
 *location to write
 *************************************************************/
-byte EEProm::_getStatusPtr()
+byte RingEEPROM::_getStatusPtr()
 {
   byte ptr;
   byte i = 0;
@@ -75,7 +75,7 @@ byte EEProm::_getStatusPtr()
 /************************************************************
 *user call this methods to save the parameter packet
 *************************************************************/
-void EEProm::savePacket(byte *dataBuf)
+void RingEEPROM::savePacket(byte *dataBuf)
 {
   byte statusPtr = _getStatusPtr();
   if (statusPtr > _bufSz)
@@ -90,11 +90,11 @@ void EEProm::savePacket(byte *dataBuf)
   byte index = statusPtr - 1;
   //Status pointer address ends, param pointer address starts
   int paramInitAddr = _initAddr + _bufSz;
-  int paramPtr = paramInitAddr + (index * _paramPacketSz);
-  debugEep(F("Data Save Addr: ")); debugEepln(paramPtr);
+  _paramPtr = paramInitAddr + (index * _paramPacketSz);
+  //debugEep(F("Data Save Addr: ")); debugEepln(_paramPtr);
   for (byte i = 0; i < _paramPacketSz; i++)
   {
-    int addr = paramPtr + i;
+    int addr = _paramPtr + i;
     EEPROM.write(addr, dataBuf[i]);
   }
   EEPROM.write(_initAddr + index, statusPtr); // update status pointer
@@ -103,7 +103,7 @@ void EEProm::savePacket(byte *dataBuf)
 /************************************************************
 *user call this methods to read last saved value
 *************************************************************/
-void  EEProm::readPacket(byte *dataBuf)
+void  RingEEPROM::readPacket(byte *dataBuf)
 {
   byte statusPtr = _getStatusPtr();
   byte index = statusPtr - 2;
@@ -119,9 +119,14 @@ void  EEProm::readPacket(byte *dataBuf)
   //Serial.println();
 }
 
-
-void EEProm::printStatusBuf()
+uint16_t  RingEEPROM::getParamPtr()
 {
+	return _paramPtr;
+}
+
+void RingEEPROM::printStatusBuf()
+{
+  Serial.print(F("Status Buf: "));
   byte value;
   for (byte i = 0; i < _bufSz; i++)
   {
@@ -130,7 +135,7 @@ void EEProm::printStatusBuf()
   }
   Serial.println();
 }
-void EEProm::printArray(byte *data, byte len)
+void RingEEPROM::printArray(byte *data, byte len)
 {
   for (byte i = 0; i < len; i++)
   {
@@ -139,7 +144,7 @@ void EEProm::printArray(byte *data, byte len)
   debugEepln();
 }
 
-void EEProm::populateStatus()
+void RingEEPROM::populateStatus()
 {
 
   for (byte i = 0; i < _bufSz - 3; i++)

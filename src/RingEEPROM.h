@@ -2,23 +2,27 @@
 #define _H_EEP_H_
 #include <Arduino.h>
 
-class EEProm
+class RingEEPROM
 {
   public:
-    EEProm(int addrPtr, byte bufSz, byte paramSize);
+    RingEEPROM(int addrPtr, byte bufSz, byte paramSize);
     void determineAddr();
     void savePacket(byte *dataBuf);
     void readPacket(byte *dataBuf);
     void printStatusBuf();
     void printArray(byte *data, byte len);
     void populateStatus();
-    byte _getStatusPtr();
     void _clrStatusBuf();
+
+    byte _getStatusPtr();
+    uint16_t getParamPtr();
   private:
 
     int _initAddr;
     byte _bufSz;
     byte _paramPacketSz;
+
+    uint16_t _paramPtr;
     
 };
 
