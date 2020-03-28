@@ -15,7 +15,6 @@
 #######################################
 RingEEPROM	KEYWORD1
 
-
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
@@ -23,7 +22,7 @@ savePacket	KEYWORD2
 readPacket	KEYWORD2
 getParamPtr	KEYWORD2
 printStatusBuf	KEYWORD2
-
+getBufLastAddr KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
