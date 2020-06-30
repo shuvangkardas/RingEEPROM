@@ -5,7 +5,7 @@
 * Suppose I want to save a byte in eeprom. For that I am using a ring buffer 
 * of 4 bytes. So I am getting 4 times endurance of eeprom
 
-*So for saving value in eeprom, we need two types of buffer 
+* So for saving value in eeprom, we need two types of buffer 
 * 1. Parameter Buffer : This is the intended value we want to store in EEPROM
 * 2. Status Buffer: This buffer keeps track of my current location in buffer.
 **************************************************************************/

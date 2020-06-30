@@ -13,10 +13,11 @@ class RingEEPROM
     void populateStatus();  
     uint16_t getParamPtr();
     uint16_t getBufLastAddr();
-  private:
     void _clrStatusBuf();
+  private:
+    
     byte _getStatusPtr();
-
+    
     int _initAddr;
     byte _bufSz;
     byte _paramPacketSz;
