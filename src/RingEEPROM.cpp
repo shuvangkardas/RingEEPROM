@@ -42,6 +42,21 @@ RingEEPROM::RingEEPROM(int addrPtr, byte bufSz, byte paramSize)
   //_clrStatusBuf();
 }
 
+RingEEPROM::RingEEPROM()
+{
+  //default parameters
+  _initAddr = 0;
+  _bufSz = 4;
+  _paramPacketSz = 2;
+}
+
+void RingEEPROM::begin(int addrPtr, byte bufSz, byte paramSize)
+{
+  _initAddr = addrPtr; //First address of the buffer
+  _bufSz = bufSz;      //Total number of buffer 
+  _paramPacketSz = paramSize;// Total byte in a parameter packet
+}
+
 /*************************************************************
 * When status buffer becomes full, this method clears the status buffer
 *************************************************************/
