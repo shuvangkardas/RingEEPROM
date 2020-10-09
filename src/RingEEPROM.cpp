@@ -50,9 +50,22 @@ RingEEPROM::RingEEPROM()
   _paramPacketSz = 2;
 }
 
+RingEEPROM::RingEEPROM(int addrPtr)
+{
+	_initAddr = addrPtr;
+	_bufSz = 4;
+    _paramPacketSz = 2;
+}
+
 void RingEEPROM::begin(int addrPtr, byte bufSz, byte paramSize)
 {
   _initAddr = addrPtr; //First address of the buffer
+  _bufSz = bufSz;      //Total number of buffer 
+  _paramPacketSz = paramSize;// Total byte in a parameter packet
+}
+
+void RingEEPROM::begin(byte bufSz, byte paramSize)
+{
   _bufSz = bufSz;      //Total number of buffer 
   _paramPacketSz = paramSize;// Total byte in a parameter packet
 }

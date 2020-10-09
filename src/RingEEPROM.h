@@ -7,7 +7,9 @@ class RingEEPROM
   public:
     RingEEPROM(int addrPtr, byte bufSz, byte paramSize);
     RingEEPROM();
+    RingEEPROM(int addrPtr);
     void begin(int addrPtr, byte bufSz, byte paramSize);
+    void begin(byte bufSz, byte paramSize);
     void savePacket(byte *dataBuf);
     void readPacket(byte *dataBuf);
     void printStatusBuf();
