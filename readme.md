@@ -8,7 +8,8 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-## Hign Endurance EEEPROM 
+## Hign Endurance EEEPROM
+Atmega microcontrollers have a limited EEPROM write cycle of 100k. Using the library we can overcome this limit of 100k write cycles. Primarily I have developed the library for the Arduino platform. I will add the library to other platforms in the near future
 ## Problem Statement 
 In many situation we need to write the EEPROM memory frequently.For an energy meter application, The energy parameter needs  to update frequently in EEPROM to persist the value for a long time. 
 Let's Think about a situation. 
