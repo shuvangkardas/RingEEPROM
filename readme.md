@@ -1,4 +1,14 @@
-# Hign Endurance EEEPROM 
+
+# RingEEPROM
+
+<!-- Badges -->
+[![Build Status][build-shield]][build-url]
+[![GitHub release][release-shield]][release-url]
+[![GitHub commits][commits-shield]][commits-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+## Hign Endurance EEEPROM 
 ## Problem Statement 
 In many situation we need to write the EEPROM memory frequently.For an energy meter application, The energy parameter needs  to update frequently in EEPROM to persist the value for a long time. 
 Let's Think about a situation. 
@@ -32,3 +42,22 @@ For more information please go through the Microchip [application note](http://w
 License
 ----
 MIT
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[build-shield]:https://travis-ci.com/shuvangkar/RingEEPROM.svg?branch=master
+[build-url]: https://travis-ci.com/github/shuvangkar/RingEEPROM
+
+[release-shield]: https://img.shields.io/github/release/shuvangkar/RingEEPROM.svg
+[release-url]: https://github.com/shuvangkar/RingEEPROM
+
+[commits-shield]: https://img.shields.io/github/commits-since/shuvangkar/RingEEPROM/v0.1.0
+[commits-url]: https://img.shields.io/github/commits-since/shuvangkar/RingEEPROM/v0.1.0
+
+
+[license-shield]: https://img.shields.io/github/license/shuvangkar/RingEEPROM
+[license-url]: https://github.com/shuvangkar/RingEEPROM/blob/master/LICENSE.txt
+
+
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/shuvangkar
