@@ -33,6 +33,8 @@ Dhaka, Bangladesh- March 2020
 #define debugEepln(...)  __VA_ARGS__
 #endif
 
+uint8_t _readCalcChecksum(int addr, uint16_t len);
+
 
 RingEEPROM::RingEEPROM(int addrPtr, byte bufSz, byte paramSize)
 {
@@ -77,7 +79,7 @@ void RingEEPROM::_clrStatusBuf()
 {
   
   for (byte i = 0; i < _bufSz; i++) {
-    EEPROM.write(_initAddr + i, 0);
+    EEPROM.update(_initAddr + i, 0);
   }
   debugEepln(F("Status Buf Cleared"));
   //Extra protection is needed here. after setting zero read and check
@@ -105,6 +107,7 @@ byte RingEEPROM::_getStatusPtr()
 *************************************************************/
 void RingEEPROM::savePacket(byte *dataBuf)
 {
+  int retryCount = 3;
   byte statusPtr = _getStatusPtr();
   if (statusPtr > _bufSz)
   {
@@ -119,13 +122,32 @@ void RingEEPROM::savePacket(byte *dataBuf)
   //Status pointer address ends, param pointer address starts
   int paramInitAddr = _initAddr + _bufSz;
   _paramPtr = paramInitAddr + (index * _paramPacketSz);
+
+  uint8_t checkSum = 0;
   //debugEep(F("Data Save Addr: ")); debugEepln(_paramPtr);
-  for (byte i = 0; i < _paramPacketSz; i++)
+  do
   {
-    int addr = _paramPtr + i;
-    EEPROM.write(addr, dataBuf[i]);
+    for (byte i = 0; i < _paramPacketSz; i++)
+    {
+      int addr = _paramPtr + i;
+      checkSum += (uint8_t)dataBuf[i];
+      EEPROM.update(addr, dataBuf[i]);
+    }
+    // Serial.println("RingEEPROM> Checksum matched");
   }
-  EEPROM.write(_initAddr + index, statusPtr); // update status pointer
+  while(--retryCount && (_readCalcChecksum(_paramPtr, _paramPacketSz) != checkSum ));
+  
+  // if(_readCalcChecksum(_paramPtr, _paramPacketSz) == checkSum )
+  // {
+  //   Serial.println("RingEEPROM> Checksum matched");
+  // }
+  // else
+  // {
+  //   Serial.println("RingEEPROM> Checksum not matched");
+  // }
+
+  EEPROM.update(_initAddr + index, statusPtr); // update status pointer
+  
 }
 
 /************************************************************
@@ -191,7 +213,18 @@ void RingEEPROM::populateStatus()
 
   for (byte i = 0; i < _bufSz - 3; i++)
   {
-    EEPROM.write(_initAddr + i, i + 1);
+    EEPROM.update(_initAddr + i, i + 1);
   }
+}
+
+uint8_t _readCalcChecksum(int addr, uint16_t len)
+{
+  uint8_t cks = 0;
+  int addrLen = addr + len;
+  for(int i = addr; i < addrLen; i++)
+  {
+    cks += EEPROM.read(i);
+  }
+  return cks;
 }
 
